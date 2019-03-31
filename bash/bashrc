@@ -1,0 +1,25 @@
+# set PATH so it includes user's private bin if it exists
+if [[ -d "$HOME/bin" ]]; then
+	PATH="$HOME/bin:$PATH"
+fi
+
+# xdg-derived, systemd file-hierarchy
+if [[ -d "$HOME/.local/bin" ]]; then
+	PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [[ -d "$HOME/.files/bin" ]]; then
+	PATH="$HOME/.files/bin:$PATH"
+fi
+
+
+# Default editor
+export EDITOR=/usr/bin/vim
+
+# Ignore CTRL-D for five times before exiting shell
+export IGNOREEOF=5
+
+# devvm GO bin and GOPATH overrides
+export PATH=/opt/golang1.12/bin:$PATH:$HOME/go/bin
+export GOPATH=$HOME/go:/vagrant/threepo
+

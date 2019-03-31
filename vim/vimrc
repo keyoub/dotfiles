@@ -1,0 +1,373 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"       https://github.com/amix/vimrc
+"
+" Syntax_highlighted:
+"       http://amix.dk/vim/vimrc.html
+"
+" Raw_version: 
+"       http://amix.dk/vim/vimrc.txt
+"
+" Sections:
+"    -> General
+"    -> VIM user interface
+"    -> Colors and Fonts
+"    -> Files and backups
+"    -> Text, tab and indent related
+"    -> Visual mode related
+"    -> Moving around, tabs and buffers
+"    -> Status line
+"    -> Editing mappings
+"    -> vimgrep searching and cope displaying
+"    -> Spell checking
+"    -> Misc
+"    -> Helper functions
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set nocompatible              " required                                                                                                                      
+filetype plugin indent on            " required                                                                                                               
+
+" Installed Plugins
+" ack-vim
+" lightline
+" splitjoin.vim
+" tcomment_vim
+" vim-fugitive
+" vim-go
+                                                                                                                                                              
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugin settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable fuzy finder
+set rtp+=~/.fzf
+
+" Lightline
+let g:lightline = {
+\ 'colorscheme': 'jellybeans',
+\ 'active': {
+\   'left': [['paste'], ['relativepath', 'modified']],
+\   'right': [['lineinfo'], ['percent']]
+\ },
+\ 'inactive': {
+\   'left': [['relativepath', 'modified']],
+\   'right': [['lineinfo'], ['percent']]
+\ },
+\ }
+
+
+" Update and show lightline but only if it's visible (e.g., not in Goyo)
+function! s:MaybeUpdateLightline()
+  if exists('#lightline')
+    call lightline#update()
+  end
+endfunction
+
+" Always show the status line
+set laststatus=2
+
+" Run GoImports on each GoFmt run
+let g:go_fmt_command = "goimports"
+
+" Key maps
+" And remove trailing whitespace automatically
+" http://vim.wikia.com/wiki/Remove_unwanted_spaces
+" nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
+
+" Gblame
+nmap  <silent> <F7> :Gblame<CR>
+
+" File explorer
+map <silent> <C-n> :Explore<CR>
+
+" Fuzzy Finder
+map <silent> <C-p> :FZF<CR>
+
+" C-x to run last term command
+map <silent> <C-x> :term<Up><CR>
+
+"--------------------
+" Function: Open tag under cursor in new tab
+" Source:   http://stackoverflow.com/questions/563616/vimctags-tips-and-tricks
+"--------------------
+" map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Sets how many lines of history VIM has to remember
+set history=1000
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Turn on the WiLd menu
+"set wildmenu
+
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+
+" In many terminal emulators the mouse works just fine, thus enable it.
+"if has('mouse')
+"  set mouse=a
+"endif
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases 
+set smartcase
+
+" Highlight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch 
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw 
+
+" Show matching brackets when text indicator is over them
+set showmatch 
+" How many tenths of a second to blink when matching brackets
+set mat=2
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable syntax highlighting
+syntax enable 
+let python_highlight_all=1
+
+" Enable code folding
+" set foldmethod=syntax
+
+" Set extra options when running in GUI mode
+if has("gui_running")
+    set guioptions-=T
+    set guioptions-=e
+    set t_Co=256
+    set guitablabel=%M\ %t
+endif
+
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set noswapfile
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Use spaces instead of tabs
+set expandtab
+
+" Be smart when using tabs ;)
+set smarttab
+
+" 1 tab == 4 spaces
+set shiftwidth=4
+set tabstop=4
+set textwidth=79
+set softtabstop=4
+
+" Linebreak on 500 characters
+set lbr
+set tw=500
+
+set ai "Auto indent
+set si "Smart indent
+set wrap "Wrap lines
+
+
+""""""""""""""""""""""""""""""
+" => Visual mode related
+""""""""""""""""""""""""""""""
+" Visual mode pressing * or # searches for the current selection
+" Super useful! From an idea by Michael Naumann
+vnoremap <silent> * :call VisualSelection('f', '')<CR>
+vnoremap <silent> # :call VisualSelection('b', '')<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Moving around, tabs, windows and buffers
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Treat long lines as break lines (useful when moving around in them)
+map j gj
+map k gk
+
+" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
+map <space> /
+map <c-space> ?
+
+" Disable highlight when <leader><cr> is pressed
+map <silent> <leader><cr> :noh<cr>
+
+" Smart way to move between windows
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Useful mappings for managing tabs
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove 
+map <leader>t<leader> :tabnext 
+
+" Let 'tl' toggle between this and the last accessed tab
+let g:lasttab = 1
+nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+au TabLeave * let g:lasttab = tabpagenr()
+
+
+" Opens a new tab with the current buffer's path
+" Super useful when editing files in the same directory
+"map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+" Switch CWD to the directory of the open buffer
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" Specify the behavior when switching between buffers 
+" try
+"   set switchbuf=useopen,usetab,newtab
+"   set stal=2
+" catch
+" endtry
+
+" Return to last edit position when opening files (You want this!)
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+" Remember info about open buffers on close
+"set viminfo^=%
+
+
+""""""""""""""""""""""""""""""
+" => Status line
+""""""""""""""""""""""""""""""
+" Always show the status line
+"set laststatus=2
+
+" Format the status line
+"set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Editing mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Delete trailing white space on save, useful for Python and CoffeeScript ;)
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunc
+autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.coffee :call DeleteTrailingWS()
+autocmd BufWrite *.rb :call DeleteTrailingWS()
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Ag searching and cope displaying
+"    requires ag.vim - it's much better than vimgrep/grep
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" When you press gv you Ag after the selected text
+vnoremap <silent> gv :call VisualSelection('gv', '')<CR>
+
+" Open Ag and put the cursor in the right position
+map <leader>g :Ag 
+
+" When you press <leader>r you can search and replace the selected text
+vnoremap <silent> <leader>r :call VisualSelection('replace', '')<CR>
+
+" Do :help cope if you are unsure what cope is. It's super useful!
+"
+" When you search with Ag, display your results in cope by doing:
+"   <leader>cc
+"
+" To go to the next search result do:
+"   <leader>n
+"
+" To go to the previous search results do:
+"   <leader>p
+"
+map <leader>cc :botright cope<cr>
+map <leader>co ggVGy:tabnew<cr>:set syntax=qf<cr>pgg
+map <leader>n :cn<cr>
+map <leader>p :cp<cr>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Spell checking
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Pressing ,ss will toggle and untoggle spell checking
+map <leader>ss :setlocal spell!<cr>
+
+" Shortcuts using <leader>
+map <leader>sn ]s
+map <leader>sp [s
+map <leader>sa zg
+map <leader>s? z=
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Misc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Quickly open a buffer for scribble
+map <leader>q :e ~/buffer.md<cr>
+
+" Toggle paste mode on and off
+map <leader>pp :setlocal paste!<cr>
+
+" undodir -- Undo works even after closing vim
+set undodir=~/.vim/undodir
+set undofile
+set undolevels=1000 "maximum number of changes that can be undone
+set undoreload=10000 "maximum number lines to save for undo on a buffer reload
+
+" Special style for Coho
+" See http://stackoverflow.com/questions/3444696/how-to-disable-vims-indentation-of-switch-case
+" See http://vimdoc.sourceforge.net/htmldoc/indent.html
+set cindent
+set formatoptions=tcqlron
+set cinoptions=:0,l1,t0,g0,(0
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Helper functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has('cscope')
+    set cscopetag cscopeverbose
+
+    " if has('quickfix')
+    "     set cscopequickfix=s-,c-,d-,i-,t-,e-
+    " endif
+
+    cnoreabbrev csa cs add
+    cnoreabbrev csf cs find
+    cnoreabbrev csk cs kill
+    cnoreabbrev csr cs reset
+    cnoreabbrev css cs show
+    cnoreabbrev csh cs help
+
+    " add any cscope database in current directory
+    if filereadable("cscope.out")
+        silent cs add cscope.out 
+    " else add the database pointed to by environment variable 
+    elseif $CSCOPE_DB != ""
+        cs add $CSCOPE_DB
+    endif
+endif

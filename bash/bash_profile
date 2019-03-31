@@ -1,0 +1,40 @@
+#!/usr/bin/env sh
+
+. ${HOME}/.bashrc
+
+source ${HOME}/.alias
+
+if [ -d "$HOME/etc/bash_completion.d" ] ; then
+	. $HOME/etc/bash_completion.d/*.bash
+fi
+
+if [ -f /etc/bash_completion ] ; then
+	. /etc/bash_completion
+fi
+
+# override git stat on devvm
+function __git_ps1_wrap() {
+    local savetrap ret
+    [ -n "${GIT_PS1_DISABLE:-}" ] && return 0
+    savetrap="$(trap -p DEBUG)"
+    trap - DEBUG
+    if [[ "$PWD" == /net/* || "$PWD" == /Volumes/* ]]; then
+      [ "${GIT_PS1_SHOWUNTRACKEDFILES:-}" == "1" ] && unset GIT_PS1_SHOWUNTRACKEDFILES
+    else
+      [ -z "${GIT_PS1_SHOWUNTRACKEDFILES:-}" ] && GIT_PS1_SHOWUNTRACKEDFILES=1
+    fi
+    __git_ps1 "$@"
+    ret=$?
+    [ -n "$savetrap" ] && eval "$savetrap"
+    return "${ret:-0}"
+}
+
+if [ -t 1 ]; then
+    if [ -r /etc/bash_completion.d/git ]; then
+        source /etc/bash_completion.d/git
+        PS1='[\u@\h \w]$( __git_ps1_wrap "(%s)" )\$ '
+    else
+        PS1=' \W \\$ \[$(tput sgr0)\]'
+    fi
+fi
+
