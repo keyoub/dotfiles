@@ -53,3 +53,5 @@
    sm = branch --merged
    # delete merged branches
    dmb = !sh -c 'git branch --merged | egrep -v \"(^\\*|master|dev)\" | xargs git branch -d' -
+[core]
+	excludesfile = ~/.gitignore

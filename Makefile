@@ -16,6 +16,7 @@ vim:
 git:
 	ln -fs $(DOTFILES)/git/gitconfig ${HOME}/.gitconfig
 	ln -fs $(DOTFILES)/git/gitcommit ${HOME}/.gitcommit
+	ln -fs $(DOTFILES)/git/gitignore ${HOME}/.gitignore
 qute:
 ifeq (${OS},OSX)
 	mkdir -p ${HOME}/.qutebrowser
