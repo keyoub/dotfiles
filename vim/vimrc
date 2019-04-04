@@ -85,6 +85,10 @@ map <silent> <C-p> :FZF<CR>
 " C-x to run last term command
 map <silent> <C-x> :term<Up><CR>
 
+" Debugging
+map <leader>db oimport pdb; pdb.set_trace()<ESC>
+map <leader>ry orequire "pry"; binding.pry<ESC>
+
 "--------------------
 " Function: Open tag under cursor in new tab
 " Source:   http://stackoverflow.com/questions/563616/vimctags-tips-and-tricks
