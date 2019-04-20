@@ -68,11 +68,6 @@ set laststatus=2
 " Run GoImports on each GoFmt run
 let g:go_fmt_command = "goimports"
 
-" Key maps
-" And remove trailing whitespace automatically
-" http://vim.wikia.com/wiki/Remove_unwanted_spaces
-" nnoremap <silent> <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar>:nohl<CR>
-
 " Gblame
 nmap  <silent> <F7> :Gblame<CR>
 
@@ -260,29 +255,19 @@ autocmd BufReadPost *
 "set viminfo^=%
 
 
-""""""""""""""""""""""""""""""
-" => Status line
-""""""""""""""""""""""""""""""
-" Always show the status line
-"set laststatus=2
-
-" Format the status line
-"set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
+" Delete trailing white space on save
 func! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
   exe "normal `z"
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.coffee :call DeleteTrailingWS()
 autocmd BufWrite *.rb :call DeleteTrailingWS()
+autocmd BufWrite *.go :call DeleteTrailingWS()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -331,6 +316,9 @@ map <leader>s? z=
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" allow backspace use in all insert mode
+set backspace=indent,eol,start
+
 " Quickly open a buffer for scribble
 map <leader>q :e ~/buffer.md<cr>
 
@@ -343,14 +331,7 @@ set undofile
 set undolevels=1000 "maximum number of changes that can be undone
 set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 
-" Special style for Coho
-" See http://stackoverflow.com/questions/3444696/how-to-disable-vims-indentation-of-switch-case
-" See http://vimdoc.sourceforge.net/htmldoc/indent.html
-set cindent
-set formatoptions=tcqlron
-set cinoptions=:0,l1,t0,g0,(0
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has('cscope')

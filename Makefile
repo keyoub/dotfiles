@@ -13,15 +13,8 @@ tmux:
 vim:
 	mkdir -p ${HOME}/.vim/pack/plugins/start/
 	ln -fs $(DOTFILES)/vim/vimrc ${HOME}/.vimrc
+	$(DOTFILES)/vim/setup_plugins.sh $(DOTFILES)/vim/plugins.txt
 git:
 	ln -fs $(DOTFILES)/git/gitconfig ${HOME}/.gitconfig
 	ln -fs $(DOTFILES)/git/gitcommit ${HOME}/.gitcommit
 	ln -fs $(DOTFILES)/git/gitignore ${HOME}/.gitignore
-qute:
-ifeq (${OS},OSX)
-	mkdir -p ${HOME}/.qutebrowser
-	ln -fs $(DOTFILES)/qute/config.py ${HOME}/.qutebrowser/config.py
-else
-	mkdir -p ${HOME}/.config/qutebrowser
-	ln -fs $(DOTFILES)/qute/config.py ${HOME}/.config/qutebrowser/config.py
-endif
