@@ -75,7 +75,9 @@ nmap  <silent> <F7> :Gblame<CR>
 map <silent> <C-n> :Explore<CR>
 
 " Fuzzy Finder
-map <silent> <C-p> :FZF<CR>
+nnoremap <silent> <C-p> :FZF<CR>
+nnoremap <silent> <C-g> :Rg<CR>
+nnoremap <silent> <C-b> :Buffers<CR>
 
 " C-x to run last term command
 map <silent> <C-x> :term<Up><CR>
