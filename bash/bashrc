@@ -20,7 +20,13 @@ export IGNOREEOF=5
 
 # devvm GO bin and GOPATH overrides
 export PATH=/opt/golang1.12/bin:$PATH:$HOME/go/bin
-export GOPATH=$HOME/go:/vagrant/threepo
+if [ $HOSTNAME == "ep-vm-aws" ]
+then
+    export GOPATH=$HOME/go:$HOME/threepo
+else
+    export GOPATH=$HOME/go:/vagrant/threepo
+fi
+
 
 # use fd instead of find in fzf
 # honors .fdignore per dir

@@ -1,5 +1,15 @@
 #!/bin/sh
 
+kp() {
+local pid=$(ps -ax| sed 1d | eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[kill:process]'" | awk '{print $2}')
+
+if [ "x$pid" != "x" ]
+then
+  echo $pid | xargs kill -${1:-9}
+  kp
+fi
+}
+
 fixssh() {
   for key in SSH_AUTH_SOCK SSH_CONNECTION SSH_CLIENT; do
     if (tmux show-environment 2>/dev/null | grep "^${key}" > /dev/null); then
