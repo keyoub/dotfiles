@@ -27,6 +27,10 @@ else
     export GOPATH=$HOME/go:/vagrant/threepo
 fi
 
+if [[ "$OSTYPE" == "darwin"* ]]
+then
+    PS1='\[\e[32m\u\] \[\e[36m\w\] \[\e[33m\]\[\e[1m\]$ \[\e[0m\]'
+fi
 
 # use fd instead of find in fzf
 # honors .fdignore per dir

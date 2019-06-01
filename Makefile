@@ -19,3 +19,7 @@ git:
 	ln -fs $(DOTFILES)/git/gitconfig ${HOME}/.gitconfig
 	ln -fs $(DOTFILES)/git/gitcommit ${HOME}/.gitcommit
 	ln -fs $(DOTFILES)/git/gitignore ${HOME}/.gitignore
+brew:
+ifeq (${OS},OSX)
+	brew install fzf fd ripgrep
+endif
