@@ -12,6 +12,7 @@ tmux:
 	ln -fs $(DOTFILES)/tmux/tmux.conf ${HOME}/.tmux.conf
 vim:
 	mkdir -p ${HOME}/.vim/pack/plugins/start/
+	cp -r $(DOTFILES)/vim/colors ${HOME}/.vim/
 	ln -fs $(DOTFILES)/vim/vimrc ${HOME}/.vimrc
 	$(DOTFILES)/vim/setup_plugins.sh $(DOTFILES)/vim/plugins.txt
 git:

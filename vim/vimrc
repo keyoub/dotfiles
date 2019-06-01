@@ -24,6 +24,8 @@
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+let mapleader = ","
+
 set nocompatible              " required                                                                                                                      
 filetype plugin indent on            " required                                                                                                               
 
@@ -65,12 +67,6 @@ endfunction
 " Always show the status line
 set laststatus=2
 
-" Run GoImports on each GoFmt run
-let g:go_fmt_command = "goimports"
-
-" Gblame
-nmap  <silent> <F7> :Gblame<CR>
-
 " File explorer
 map <silent> <C-n> :Explore<CR>
 
@@ -94,10 +90,28 @@ map <leader>ry orequire "pry"; binding.pry<ESC>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-go
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Run GoImports on each GoFmt run
+let g:go_fmt_command = "goimports"
+
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sets how many lines of history VIM has to remember
-set history=1000
+set history=10000
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -110,11 +124,6 @@ set autoread
 
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
-
-" In many terminal emulators the mouse works just fine, thus enable it.
-"if has('mouse')
-"  set mouse=a
-"endif
 
 " Ignore case when searching
 set ignorecase
@@ -145,7 +154,8 @@ set tm=500
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-colorscheme desert
+set background=dark
+colorscheme hybrid
 
 " Enable syntax highlighting
 syntax enable 
