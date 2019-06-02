@@ -20,6 +20,6 @@ git:
 	ln -fs $(DOTFILES)/git/gitcommit ${HOME}/.gitcommit
 	ln -fs $(DOTFILES)/git/gitignore ${HOME}/.gitignore
 brew:
-ifeq (${OS},OSX)
+ifeq ($(shell uname -s),Darwin)
 	brew install fzf fd ripgrep
 endif
