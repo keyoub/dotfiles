@@ -7,3 +7,4 @@ https://github.com/tpope/vim-fugitive.git
 https://github.com/fatih/vim-go.git
 https://github.com/rust-lang/rust.vim
 https://github.com/junegunn/fzf.vim.git
+https://github.com/junegunn/vim-easy-align.git
