@@ -117,6 +117,12 @@ endfunction
 
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => previm
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:previm_open_cmd = 'open -a Firefox'
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -188,7 +194,28 @@ set encoding=utf8
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set noswapfile
+" Protect changes between writes. Default values of
+" updatecount (200 keystrokes) and updatetime
+" (4 seconds) are fine
+set swapfile
+set directory^=~/.vim/swap//
+
+" protect against crash-during-write
+set writebackup
+" but do not persist backup after successful write
+set nobackup
+" use rename-and-write-new method whenever safe
+set backupcopy=auto
+" patch required to honor double slash at end
+if has("patch-8.1.0251")
+	" consolidate the writebackups -- not a big
+	" deal either way, since they usually get deleted
+	set backupdir^=~/.vim/backup//
+end
+
+" persist the undo tree for each file
+set undofile
+set undodir^=~/.vim/undo//
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
@@ -319,12 +346,6 @@ map <leader>q :e ~/buffer.md<cr>
 
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
-
-" undodir -- Undo works even after closing vim
-set undodir=~/.vim/undodir
-set undofile
-set undolevels=1000 "maximum number of changes that can be undone
-set undoreload=10000 "maximum number lines to save for undo on a buffer reload
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
