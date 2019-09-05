@@ -9,3 +9,4 @@ https://github.com/rust-lang/rust.vim
 https://github.com/junegunn/fzf.vim.git
 https://github.com/junegunn/vim-easy-align.git
 https://github.com/tpope/vim-dotenv.git
+https://github.com/tpope/vim-surround
