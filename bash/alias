@@ -10,6 +10,14 @@ then
 fi
 }
 
+f() {
+	fzf --preview '[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat {} || cat {}) 2> /dev/null | head -500'
+}
+
+zd() {
+	cd $(find $1 -type d | f)
+}
+
 fixssh() {
   for key in SSH_AUTH_SOCK SSH_CONNECTION SSH_CLIENT; do
     if (tmux show-environment 2>/dev/null | grep "^${key}" > /dev/null); then
@@ -23,18 +31,9 @@ myip() {
 	echo $(dig +short myip.opendns.com @resolver1.opendns.com)
 }
 
-minitest() {
-	if [[ ! -s $(which testrbl 2>/dev/null) ]]; then
-		gem install testrbl --no-document -qq
-	fi
-
-	testrbl "$@"
-}
-
 git-rebase-style() {
 	git rebase -x "git diff HEAD~1 --name-status | egrep -v '^D' | egrep '*.rb' | awk '{print \$2}' | xargs bundle exec rubocop -a --force-exclusion" $1
 }
-
 
 current-version() {
 	git tag -l 'v*' | sed -E 's/^v//g' | sort -g | tail -n 1
@@ -42,60 +41,6 @@ current-version() {
 
 current-semver() {
 	git tag -l | egrep '[0-9]+\.[0-9]+\.[0-9]+' | sort -g | tail -n 1
-}
-
-git-release() {
-	git fetch origin -q
-	local current_release=$(current-version)
-	echo "Current release: v$current_release"
-	local next_release=v$(($current_release + 1))
-	echo "Releasing: $next_release"
-	git tag $next_release && git push origin $next_release
-	# tag_push=$?
-	# if [ $tag_push -ne 0 ]; then
-	#         read -p "Force push? " -n 1 -r
-	#         echo # move to new line
-	#         if [[ $REPLY =~ ^[Yy]$ ]]; then
-	#                 git push -f origin $next_release
-	#         else
-	#                 exit 1
-	#         fi
-	# fi
-
-	if [ -f .ruby-version ]; then
-		echo "deploy with:\nREVISION=$next_release bundle exec cap production deploy"
-	fi
-}
-
-cookbooks-version() {
-	egrep "version\s+'([0-9\.]+)'" metadata.rb | sed -E 's/version[ ]+//' | cut -d "'" -f2
-}
-
-cookbooks-release() {
-	local version=$(cookbooks-version)
-	local tag="v$version"
-	echo "Releasing: $tag"
-	sleep 1
-	git tag $tag && git push origin $tag
-}
-
-next-version() {
-	ruby -e "pos = {'major' => 0, 'minor' => 1, 'patch' => 2}.fetch(ARGV[1] || 'patch'); puts ARGV[0].split('.').tap { |vp| vp[pos] = Integer(vp[pos]) + 1 }.join('.')" $@
-}
-
-cookbooks-bump() {
-	local version=$(cookbooks-version)
-	local next_version=$(next-version $version $@)
-	echo "Bumping to $next_version"
-	sed -E -i '' "s/^version([[:blank:]]+)'[0-9\.]+'/version\1'$next_version'/" metadata.rb
-	local actual_version=$(cookbooks-version)
-
-	if [ "$actual_version" = "$next_version" ]; then
-		git add metadata.rb && \
-			git commit -m "chore(version): $actual_version"
-	else
-		echo "Failed to bump cookbooks version. Now " $actual_version
-	fi
 }
 
 # bash
@@ -139,7 +84,6 @@ alias r='be rspec'
 alias rff='r --fail-fast'
 alias reado="ssh-reagent $*"
 
-alias enw='emacs -nw'
 alias pg-start='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
 alias pg-stop='pg_ctl -D /usr/local/var/postgres stop -s -m fast'
 alias v='vagrant'
@@ -155,7 +99,6 @@ alias rba='be rubocop -a'
 
 alias curlb='curl -s'
 alias curls='curl -svo /dev/null'
-alias curlsd='curl -svo /dev/null -H "Fastly-Debug: 1"'
 alias curl-ttfb='curls -w "Connect: %{time_connect} TTFB: %{time_starttransfer} Total time: %{time_total} \n"'
 
 ## Set ls options per platform
@@ -192,15 +135,3 @@ alias arc-land="arc land --merge"
 alias vcr='be env VCR_RECORD=all rspec'
 alias port_kill='cat .env .env-override | egrep "^PORT" | egrep -o "[0-9]+$" | xargs -i{} lsof -ti :{} | xargs kill -9'
 alias reshell="exec -l $SHELL"
-
-f() {
-	fzf --preview '[[ $(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat {} || cat {}) 2> /dev/null | head -500'
-}
-
-zd() {
-	cd $(find $1 -type d | f)
-}
-
-i() {
-	nvim -R -c Lines
-}
