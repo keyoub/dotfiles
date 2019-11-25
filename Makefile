@@ -9,7 +9,7 @@ bash:
 	ln -fs $(DOTFILES)/bash/bashrc ${HOME}/.bashrc
 	ln -fs $(DOTFILES)/bash/bash_profile ${HOME}/.bash_profile
 tmux:
-	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm || true
 	ln -fs $(DOTFILES)/tmux/tmux.conf ${HOME}/.tmux.conf
 vim:
 	mkdir -p ${HOME}/.vim/pack/plugins/start/

@@ -18,14 +18,9 @@ export EDITOR=/usr/bin/vim
 # Ignore CTRL-D for five times before exiting shell
 export IGNOREEOF=5
 
-# devvm GO bin and GOPATH overrides
+# EP devvm GO bin and GOPATH overrides
 export PATH=/opt/golang1.12/bin:$PATH:$HOME/go/bin
-if [ $HOSTNAME == "ep-vm-aws" ]
-then
-    export GOPATH=$HOME/go:$HOME/threepo
-else
-    export GOPATH=$HOME/go:/vagrant/threepo
-fi
+export GOPATH=$HOME/go:$HOME/threepo
 
 if [[ "$OSTYPE" == "darwin"* ]]
 then
