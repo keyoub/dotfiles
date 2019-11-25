@@ -215,7 +215,7 @@ end
 
 " persist the undo tree for each file
 set undofile
-set undodir^=~/.vim/undo//
+set undodir=~/.vim/undo-dir
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
