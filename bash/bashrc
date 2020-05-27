@@ -19,8 +19,8 @@ export EDITOR=/usr/bin/vim
 export IGNOREEOF=5
 
 # EP devvm GO bin and GOPATH overrides
-export PATH=/opt/golang1.12/bin:$PATH:$HOME/go/bin
-export GOPATH=$HOME/go:$HOME/threepo
+export PATH=/opt/golang1.13/bin:$PATH:$HOME/go/bin
+export GOPATH=$HOME/go:$HOME/threepo:$HOME/usps:$HOME/uspsapv:$HOME/ezpes/host
 
 if [[ "$OSTYPE" == "darwin"* ]]
 then
