@@ -138,6 +138,9 @@ set autoread
 " Turn on the WiLd menu
 "set wildmenu
 
+" Get rid of the preview buffer on omnicomplete
+set completeopt=menu
+
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 
