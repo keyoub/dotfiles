@@ -16,12 +16,10 @@ done < $1
 
 # update any existing ones
 for plugin in */; do
-    if [ "$plugin" != "vim-go/" ]
-    then
-        pushd $plugin
-        git pull
-        popd
-    fi
+    # if [ "$plugin" != "vim-go/" ] uncomment if ever need to pin vim-go again
+    pushd $plugin
+    git pull
+    popd
 done
 
 popd
