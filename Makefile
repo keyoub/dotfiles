@@ -8,6 +8,7 @@ bash:
 	ln -fns $(DOTFILES)/etc/ ${HOME}/etc
 	ln -fs $(DOTFILES)/bash/bashrc ${HOME}/.bashrc
 	ln -fs $(DOTFILES)/bash/bash_profile ${HOME}/.bash_profile
+	$(DOTFILES)/bash/install_fzf.sh
 tmux:
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm || true
 	ln -fs $(DOTFILES)/tmux/tmux.conf ${HOME}/.tmux.conf
