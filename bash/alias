@@ -31,6 +31,14 @@ myip() {
 	echo $(dig +short myip.opendns.com @resolver1.opendns.com)
 }
 
+bash-script() {
+    cat > $1 << EOF
+#!/bin/sh
+
+set -eou
+EOF
+}
+
 git-rebase-style() {
 	git rebase -x "git diff HEAD~1 --name-status | egrep -v '^D' | egrep '*.rb' | awk '{print \$2}' | xargs bundle exec rubocop -a --force-exclusion" $1
 }
