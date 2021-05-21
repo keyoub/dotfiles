@@ -18,10 +18,6 @@ export EDITOR=/usr/bin/vim
 # Ignore CTRL-D for five times before exiting shell
 export IGNOREEOF=5
 
-# EP devvm GO bin and GOPATH overrides
-export PATH=/opt/golang1.13/bin:$PATH:$HOME/go/bin
-export GOPATH=$HOME/go:$HOME/threepo:$HOME/usps:$HOME/uspsapv:$HOME/ezpes/host
-
 if [[ "$OSTYPE" == "darwin"* ]]
 then
     export PS1="\[\033[38;5;34m\]\u\[$(tput sgr0)\]\[\033[38;5;15m\] \[$(tput sgr0)\]\[\033[38;5;38m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\] \\$\[$(tput sgr0)\] "

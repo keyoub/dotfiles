@@ -19,9 +19,11 @@ zd() {
 }
 
 fixssh() {
+  tmux show-environment > /tmp/tmux_ssh_env_swap
   for key in SSH_AUTH_SOCK SSH_CONNECTION SSH_CLIENT; do
-    if (tmux show-environment 2>/dev/null | grep "^${key}" > /dev/null); then
-      value=`tmux show-environment | grep "^${key}" | sed -e "s/^[A-Z_]*=//"`
+    if (cat /tmp/tmux_ssh_env_swap 2>/dev/null | grep "^${key}" > /dev/null); then
+      value=`cat /tmp/tmux_ssh_env_swap | grep "^${key}" | sed -e "s/^[A-Z_]*=//"`
+      echo "setting ${key}=${value}"
       export ${key}="${value}"
     fi
   done

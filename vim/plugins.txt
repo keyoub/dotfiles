@@ -10,3 +10,4 @@ https://github.com/junegunn/fzf.vim.git
 https://github.com/junegunn/vim-easy-align.git
 https://github.com/tpope/vim-dotenv.git
 https://github.com/tpope/vim-surround
+https://github.com/SirVer/ultisnips.git

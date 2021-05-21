@@ -12,4 +12,6 @@ if [ -f /etc/bash_completion ] ; then
 	. /etc/bash_completion
 fi
 
-export PATH="$HOME/.cargo/bin:$PATH"
+if [ -f "$HOME/.ep_bashrc" ] ; then
+	. $HOME/.ep_bashrc
+fi
