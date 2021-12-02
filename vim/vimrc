@@ -105,6 +105,9 @@ nmap ga <Plug>(EasyAlign)
 " Run GoImports on each GoFmt run
 let g:go_fmt_command = "goimports"
 
+" Use quickfix for all result lists
+let g:go_list_type = "quickfix"
+
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
   let l:file = expand('%')
@@ -115,8 +118,19 @@ function! s:build_go_files()
   endif
 endfunction
 
-autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+function! s:test_go_func()
+  call go#test#Func(0)
+endfunction
 
+
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <leader>t :<C-u>call <SID>test_go_func()<CR>
+
+" quickfix remaps
+map <C-f> :cnext<CR>
+map <C-a> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => previm
