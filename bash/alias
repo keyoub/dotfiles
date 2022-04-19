@@ -29,6 +29,13 @@ fixssh() {
   done
 }
 
+loadenv() {
+  cwd=$(pwd)
+  echo "loading the following env vars"
+  grep -v '^#' "${cwd}"/.env
+  export $(grep -v '^#' "${cwd}"/.env | xargs)
+}
+
 myip() {
 	echo $(dig +short myip.opendns.com @resolver1.opendns.com)
 }
