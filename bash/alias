@@ -36,6 +36,12 @@ loadenv() {
   export $(grep -v '^#' "${cwd}"/.env | xargs)
 }
 
+tailsql() {
+  sudo mysql -e "SET GLOBAL general_log = 'ON';"
+  sudo less +F $(mysql -Nse "SELECT @@general_log_file")
+  sudo mysql -e "SET GLOBAL general_log = 'OFF';"
+}
+
 myip() {
 	echo $(dig +short myip.opendns.com @resolver1.opendns.com)
 }
@@ -44,7 +50,8 @@ bash-script() {
     cat > $1 << EOF
 #!/bin/sh
 
-set -eou
+set -eu -o pipefail
+shopt -s nullglob
 EOF
 }
 
