@@ -77,7 +77,6 @@ map <silent> <C-x> :term<Up><CR>
 
 " Debugging
 map <leader>db oimport pdb; pdb.set_trace()<ESC>
-map <leader>ry orequire "pry"; binding.pry<ESC>
 
 "--------------------
 " Function: Open tag under cursor in new tab
@@ -170,6 +169,20 @@ let g:ale_sign_offset = 1000000
 let g:ale_sign_warning = '--'
 let g:ale_completion_enabled = 0
 let g:ale_virtualtext_cursor = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => ruby
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <leader>ry orequire "pry"; binding.pry<ESC>
+
+function s:run_single_ruby_test()
+    let linenum = line('.')
+    let file = expand('%')
+    execute 'term make test TARGET=' . file . ':' . linenum
+endfunction
+
+autocmd FileType ruby nmap <leader>t :term make test TARGET=%<CR>
+autocmd FileType ruby nmap <leader>e :<C-u>call <SID>run_single_ruby_test()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => previm
