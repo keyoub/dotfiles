@@ -4,14 +4,14 @@
 
 source ${HOME}/.alias
 
-if [ -d "$HOME/etc/bash_completion.d" ] ; then
+if [ -d "$HOME/etc/bash_completion.d" ]; then
 	. $HOME/etc/bash_completion.d/*.bash
 fi
 
-if [ -f /etc/bash_completion ] ; then
+if [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
 
-if [ -f "$HOME/.ep_bashrc" ] ; then
+if [ -f "$HOME/.ep_bashrc" ]; then
 	. $HOME/.ep_bashrc
 fi
